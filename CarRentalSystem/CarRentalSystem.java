@@ -6,58 +6,62 @@ import java.util.*;
 
 /**
  * ============================================================================================================
- *                          CAR RENTAL SYSTEM (ZOOMCAR) LLD - UML & ARCHITECTURE (SDE-1)
+ * CAR RENTAL SYSTEM (ZOOMCAR) LLD - UML & ARCHITECTURE (SDE-1)
  * ============================================================================================================
  *
  * 1. UML CLASS DIAGRAM:
  * ---------------------
- *   +------------------------------------+          +------------------------------------+
- *   |          CarRentalSystem           |          |               Store                |
- *   +------------------------------------+          +------------------------------------+
- *   | - stores : List<Store>             | *------> | - storeId : String                 |
- *   | - users  : List<User>              |          | - location : Location              |
- *   +------------------------------------+          | - vehicleManager : VehicleManager  |
- *                                                   | - reservationMgr : ReservationMgr  |
- *                                                   +------------------------------------+
- *                                                                     |
- *                       +---------------------------------------------+
- *                       | manages
- *                       v
- *   +------------------------------------+          +------------------------------------+
- *   |            Reservation             |          |              Vehicle               |
- *   +------------------------------------+          +------------------------------------+
- *   | - reservationId : String           |          | - vehicleId : String               |
- *   | - user : User                      | -------> | - vehicleType : VehicleType        |
- *   | - vehicle : Vehicle                | reserves | - make, model : String             |
- *   | - pickupDateTime : LocalDateTime   |          | - pricePerDay : double             |
- *   | - returnDateTime : LocalDateTime   |          | - status : VehicleStatus           |
- *   | - totalPrice : double              |          +------------------------------------+
- *   | - status : ReservationStatus       |
- *   +------------------------------------+
- *                       |
- *                       | generates
- *                       v
- *   +------------------------------------+          +------------------------------------+
- *   |               Bill                 |          |      <<interface>>                 |
- *   +------------------------------------+          |         PaymentStrategy            |
- *   | - billId : String                  |          +------------------------------------+
- *   | - reservation : Reservation        | -------> | + pay(amount: double) : boolean    |
- *   | - amount : double                  | paid via +------------------------------------+
- *   | - isPaid : boolean                 |                     ^              ^
- *   +------------------------------------+                     |              |
- *                                                   [UPIPayment]              [CreditCardPayment]
+ * +------------------------------------+ +------------------------------------+
+ * | CarRentalSystem | | Store |
+ * +------------------------------------+ +------------------------------------+
+ * | - stores : List<Store> | *------> | - storeId : String |
+ * | - users : List<User> | | - location : Location |
+ * +------------------------------------+ | - vehicleManager : VehicleManager |
+ * | - reservationMgr : ReservationMgr |
+ * +------------------------------------+
+ * |
+ * +---------------------------------------------+
+ * | manages
+ * v
+ * +------------------------------------+ +------------------------------------+
+ * | Reservation | | Vehicle |
+ * +------------------------------------+ +------------------------------------+
+ * | - reservationId : String | | - vehicleId : String |
+ * | - user : User | -------> | - vehicleType : VehicleType |
+ * | - vehicle : Vehicle | reserves | - make, model : String |
+ * | - pickupDateTime : LocalDateTime | | - pricePerDay : double |
+ * | - returnDateTime : LocalDateTime | | - status : VehicleStatus |
+ * | - totalPrice : double | +------------------------------------+
+ * | - status : ReservationStatus |
+ * +------------------------------------+
+ * |
+ * | generates
+ * v
+ * +------------------------------------+ +------------------------------------+
+ * | Bill | | <<interface>> |
+ * +------------------------------------+ | PaymentStrategy |
+ * | - billId : String | +------------------------------------+
+ * | - reservation : Reservation | -------> | + pay(amount: double) : boolean |
+ * | - amount : double | paid via +------------------------------------+
+ * | - isPaid : boolean | ^ ^
+ * +------------------------------------+ | |
+ * [UPIPayment] [CreditCardPayment]
  *
  *
  * 2. END-TO-END BOOKING WORKFLOW:
  * -------------------------------
- *   Step 1 (Search):   User searches Store for AVAILABLE vehicles by VehicleType (`store.searchAvailableVehicles(CAR)`).
- *   Step 2 (Reserve):  User selects a Vehicle & Dates -> `ReservationManager.bookVehicle(...)`
- *                      - Calculates duration in days (`ChronoUnit.DAYS.between(pickup, return)`).
- *                      - Computes `totalPrice = days * vehicle.getPricePerDay()`.
- *                      - Marks `vehicle.setStatus(VehicleStatus.BOOKED)`.
- *   Step 3 (Billing):  Generates a `Bill` linked to the `Reservation`.
- *   Step 4 (Payment):  Processes payment using `PaymentStrategy` (`UPIPayment` or `CreditCardPayment`).
- *   Step 5 (Return):   When trip completes (or cancels), `completeReservation()` marks Vehicle `AVAILABLE` again!
+ * Step 1 (Search): User searches Store for AVAILABLE vehicles by VehicleType
+ * (`store.searchAvailableVehicles(CAR)`).
+ * Step 2 (Reserve): User selects a Vehicle & Dates ->
+ * `ReservationManager.bookVehicle(...)`
+ * - Calculates duration in days (`ChronoUnit.DAYS.between(pickup, return)`).
+ * - Computes `totalPrice = days * vehicle.getPricePerDay()`.
+ * - Marks `vehicle.setStatus(VehicleStatus.BOOKED)`.
+ * Step 3 (Billing): Generates a `Bill` linked to the `Reservation`.
+ * Step 4 (Payment): Processes payment using `PaymentStrategy` (`UPIPayment` or
+ * `CreditCardPayment`).
+ * Step 5 (Return): When trip completes (or cancels), `completeReservation()`
+ * marks Vehicle `AVAILABLE` again!
  * ============================================================================================================
  */
 

@@ -59,7 +59,7 @@ class Main {
 
         System.out.println("Task Started.\n");
 
-        Start all threads
+        // Start all threads
         smsThread.start();
         System.out.println("Task 1 ongoing...");
 

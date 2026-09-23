@@ -61,35 +61,36 @@ class Main {
         executorService.shutdown();
     }
 }
-// 
-// class Main {
-    // public static void main(String[] args) {
-        // SMSTask smsTask = new SMSTask();
-        // EmailTask emailTask = new EmailTask();
-        // 
-        // Wrap Callable in FutureTask so Thread can run it
-        // FutureTask<String> etaTaskWrapper = new FutureTask<>(new ETACalculationTask());
-// 
-        // Create raw Thread objects
-        // Thread smsThread = new Thread(smsTask);
-        // Thread emailThread = new Thread(emailTask);
-        // Thread etaThread = new Thread(etaTaskWrapper);
-// 
-        // Start them manually
-        // smsThread.start();
-        // emailThread.start();
-        // etaThread.start();
-// 
-        // try {
-            // Get the Callable result from the FutureTask (blocks until complete)
-            // System.out.println(etaTaskWrapper.get());
-            // 
-            // Wait for other threads to finish
-            // smsThread.join();
-            // emailThread.join();
-        // } catch (InterruptedException | ExecutionException e) {
-            // e.printStackTrace();
-        // }
-    // }
-// }
-// 
+/*
+ * class Main {
+ * public static void main(String[] args) {
+ * SMSTask smsTask = new SMSTask();
+ * EmailTask emailTask = new EmailTask();
+ * 
+ * Wrap Callable in FutureTask so Thread can run it
+ * FutureTask<String> etaTaskWrapper = new FutureTask<>(new
+ * ETACalculationTask());
+ * 
+ * Create raw Thread objects
+ * Thread smsThread = new Thread(smsTask);
+ * Thread emailThread = new Thread(emailTask);
+ * Thread etaThread = new Thread(etaTaskWrapper);
+ * 
+ * Start them manually
+ * smsThread.start();
+ * emailThread.start();
+ * etaThread.start();
+ * 
+ * try {
+ * Get the Callable result from the FutureTask (blocks until complete)
+ * System.out.println(etaTaskWrapper.get());
+ * 
+ * Wait for other threads to finish
+ * smsThread.join();
+ * emailThread.join();
+ * } catch (InterruptedException | ExecutionException e) {
+ * e.printStackTrace();
+ * }
+ * }
+ * }
+ */

@@ -54,6 +54,15 @@ import java.util.*;
  *   - EntryGate                   --HAS-A--> ParkingSpotManager
  *   - ExitGate                    --HAS-A--> ParkingSpotManager, CostCalculatorStrategy, PaymentProcessor
  *   - PaymentProcessor            --HAS-A--> PaymentStrategy
+ *
+ *
+ * 5. DESIGN PATTERNS USED:
+ * ------------------------
+ *   1. Simple Factory Pattern : VehicleFactory creates Car, Bike, or Truck without exposing instantiation logic.
+ *   2. Strategy Pattern #1    : PaymentStrategy (UPIPayment, CreditCardPayment) injected into PaymentProcessor.
+ *   3. Strategy Pattern #2    : CostCalculatorStrategy (HourlyCharge, MinutesCharge) used for dynamic fee calculation.
+ *   4. Facade Pattern         : EntryGate & ExitGate provide simplified single-method workflows over spot, ticket,
+ *                               receipt, cost calculation, and payment subsystems.
  * ============================================================================================================
  */
 
@@ -63,6 +72,12 @@ enum VehicleType {
     TRUCK
 }
 
+// ============================================================================
+// DESIGN PATTERN 1: SIMPLE FACTORY PATTERN (Creational)
+// - Abstract Product : Vehicle
+// - Concrete Products: Car, Bike, Truck
+// - Factory          : VehicleFactory (centralizes object creation based on VehicleType)
+// ============================================================================
 abstract class Vehicle {
     private final String licensePlate;
     private final VehicleType type;
@@ -99,7 +114,7 @@ class Truck extends Vehicle {
     }
 }
 
-// Factory Pattern for creating Vehicle instances based on VehicleType
+// Factory Class: Encapsulates Vehicle instantiation logic
 class VehicleFactory {
     public static Vehicle createVehicle(VehicleType type, String licensePlate) {
         switch (type) {
@@ -257,10 +272,17 @@ class Receipt {
     }
 }
 
+// ============================================================================
+// DESIGN PATTERN 2: STRATEGY PATTERN FOR PAYMENT (Behavioral)
+// - Strategy Interface : PaymentStrategy
+// - Concrete Strategies: CreditCardPayment, UPIPayment
+// - Context Class      : PaymentProcessor (allows switching payment modes at runtime)
+// ============================================================================
 interface PaymentStrategy {
     boolean pay(double amount);
 }
 
+// Concrete Strategy 1: Credit Card Payment
 class CreditCardPayment implements PaymentStrategy {
     private final String cardNumber;
     private final String cardHolderName;
@@ -277,6 +299,7 @@ class CreditCardPayment implements PaymentStrategy {
     }
 }
 
+// Concrete Strategy 2: UPI Payment
 class UPIPayment implements PaymentStrategy {
     private final String upiId;
 
@@ -291,6 +314,7 @@ class UPIPayment implements PaymentStrategy {
     }
 }
 
+// Context Class: Delegates payment execution to the chosen PaymentStrategy
 class PaymentProcessor {
     private PaymentStrategy paymentStrategy;
 
@@ -298,6 +322,7 @@ class PaymentProcessor {
         this.paymentStrategy = paymentStrategy;
     }
 
+    // Allows changing the payment method dynamically at runtime
     public void setPaymentStrategy(PaymentStrategy paymentStrategy) {
         this.paymentStrategy = paymentStrategy;
     }
@@ -310,6 +335,11 @@ class PaymentProcessor {
     }
 }
 
+// ============================================================================
+// DESIGN PATTERN 3: FACADE PATTERN FOR ENTRY WORKFLOW (Structural)
+// - EntryGate hides the complexity of finding a spot, parking the vehicle,
+//   and generating a Ticket behind a single method: processVehicleEntry()
+// ============================================================================
 class EntryGate {
     private final ParkingSpotManager spotManager;
 
@@ -342,10 +372,17 @@ class EntryGate {
     }
 }
 
+// ============================================================================
+// DESIGN PATTERN 4: STRATEGY PATTERN FOR COST CALCULATION (Behavioral)
+// - Strategy Interface : CostCalculatorStrategy
+// - Concrete Strategies: HourlyCharge, MinutesCharge
+// - Context Class      : CostCalculatorStrategyManager / ExitGate
+// ============================================================================
 interface CostCalculatorStrategy {
     double calculateCost(Ticket ticket);
 }
 
+// Concrete Strategy 1: Hourly pricing calculation
 class HourlyCharge implements CostCalculatorStrategy {
 
     @Override
@@ -357,6 +394,7 @@ class HourlyCharge implements CostCalculatorStrategy {
     }
 }
 
+// Concrete Strategy 2: Per-minute pricing calculation
 class MinutesCharge implements CostCalculatorStrategy {
     @Override
     public double calculateCost(Ticket ticket) {
@@ -367,6 +405,7 @@ class MinutesCharge implements CostCalculatorStrategy {
     }
 }
 
+// Context Class: Manages and executes the active CostCalculatorStrategy
 class CostCalculatorStrategyManager {
     private CostCalculatorStrategy costCalculatorStrategy;
 
@@ -383,6 +422,11 @@ class CostCalculatorStrategyManager {
     }
 }
 
+// ============================================================================
+// DESIGN PATTERN 5: FACADE PATTERN FOR EXIT WORKFLOW (Structural)
+// - ExitGate coordinates CostCalculatorStrategy, Receipt generation,
+//   PaymentProcessor, and ParkingSpotManager behind processVehicleExit()
+// ============================================================================
 class ExitGate {
     private final PaymentProcessor paymentProcessor;
     private final ParkingSpotManager spotManager;
