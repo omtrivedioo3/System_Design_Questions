@@ -372,7 +372,7 @@ class TwoThousandWithdrawProcessor extends CashWithdrawProcessor {
             }
             balance = remainingAmount - (available * 2000);
         }
-
+        // send remaining to the next processor
         if (balance != 0) {
             super.withdraw(atm, balance);
         }
