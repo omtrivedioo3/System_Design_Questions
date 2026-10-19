@@ -61,7 +61,7 @@
  * NOTE: named the leaf "File" - avoid importing java.io.File in this file.
  * =====================================================================================
  */
-package Patterns.CompositePattern;
+package Patterns.Structural.CompositePattern;
 
 import java.util.ArrayList;
 import java.util.List;

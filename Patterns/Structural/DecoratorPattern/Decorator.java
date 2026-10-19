@@ -1,4 +1,4 @@
-package Patterns.DecoratorPattern;
+package Patterns.Structural.DecoratorPattern;
 
 /**
  * SDE-1 LLD Interview Practice: Decorator Design Pattern

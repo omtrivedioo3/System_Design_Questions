@@ -108,7 +108,7 @@
  *   - Downside: more code (fields written twice). Not worth it for 2-3 fields.
  * =====================================================================================
  */
-package Patterns.BuilderPattern;
+package Patterns.Creational.BuilderPattern;
 
 import java.util.ArrayList;
 import java.util.List;

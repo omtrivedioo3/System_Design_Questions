@@ -1,4 +1,4 @@
-package Patterns.ObserverPattern;
+package Patterns.Behavioral.ObserverPattern;
 
 import java.util.HashSet;
 import java.util.Set;

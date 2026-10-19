@@ -1,4 +1,4 @@
-package Patterns.CompositePattern;
+package Patterns.Structural.CompositePattern;
 
 interface Expression {
   int evaluate();

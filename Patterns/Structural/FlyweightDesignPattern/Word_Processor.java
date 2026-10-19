@@ -67,7 +67,7 @@
  *   Flyweight -> ONE object PER UNIQUE VALUE ('a', 'b', 'c' ... each shared).
  * =====================================================================================
  */
-package Patterns.FlyweightDesignPattern;
+package Patterns.Structural.FlyweightDesignPattern;
 
 import java.util.HashMap;
 import java.util.Map;

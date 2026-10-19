@@ -1,4 +1,4 @@
-package Patterns.StrategyPattern;
+package Patterns.Behavioral.StrategyPattern;
 
 /**
  * SDE-1 LLD Interview Practice: Strategy Design Pattern
